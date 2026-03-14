@@ -167,7 +167,7 @@ function render(index) {
 
   if (index === 9) {
     btnNext.className = "btn-quit-final";
-    btnNext.onclick = () => window.close();
+    btnNext.onclick = () => { document.getElementById('card').innerHTML = '<span class="emoji">😔</span><div class="accent-line" style="margin:18px auto;"></div><h1>Goodbye... <span class="highlight">for now.</span></h1><p>Go to <strong>chrome://extensions</strong> in your browser, find Focus Timer and click <strong>Remove</strong>.<br/><br/>We hope you come back someday. 👋</p>'; };
   } else {
     btnNext.className = "btn-next";
     btnNext.onclick = () => { current++; render(current); };
