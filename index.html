@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>You're leaving? 😢</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #ffffff;
+      font-family: 'Inter', -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: -150px; left: -150px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #fee2e2 0%, transparent 70%);
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #fef9c3 0%, transparent 70%);
+      z-index: 0;
+    }
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border: 1.5px solid #e4e4e7;
+      border-radius: 28px;
+      padding: 52px 44px;
+      max-width: 520px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+    }
+    .emoji { font-size: 68px; line-height: 1; margin-bottom: 20px; display: block; }
+    .bounce { animation: bounce 1.5s infinite; }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .accent-line { width: 44px; height: 4px; background: #dc2626; border-radius: 4px; margin: 0 auto 20px; }
+    h1 { font-size: 30px; font-weight: 900; color: #18181b; letter-spacing: -1px; line-height: 1.2; margin-bottom: 14px; }
+    .highlight { color: #dc2626; }
+    p { font-size: 15px; color: #52525b; line-height: 1.75; margin-bottom: 28px; font-weight: 400; }
+    p strong { color: #18181b; font-weight: 700; }
+    .btn-stay { width: 100%; padding: 14px; background: #18181b; color: white; border: none; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.15s; letter-spacing: -0.3px; margin-bottom: 10px; display: block; }
+    .btn-stay:hover { background: #27272a; transform: scale(1.01); }
+    .btn-stay:active { transform: scale(0.98); }
+    .btn-next { width: 100%; padding: 12px; background: transparent; color: #a1a1aa; border: 1.5px solid #e4e4e7; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; display: block; }
+    .btn-next:hover { border-color: #dc2626; color: #dc2626; }
+    .btn-quit-final { width: 100%; padding: 12px; background: transparent; color: #dc2626; border: 1.5px solid #fecaca; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; display: block; }
+    .btn-quit-final:hover { background: #fef2f2; }
+  </style>
+</head>
+<body>
+<div class="card" id="card">
+  <span class="emoji bounce" id="emoji">😢</span>
+  <div class="accent-line"></div>
+  <h1 id="title"></h1>
+  <p id="body"></p>
+  <button class="btn-stay" id="btnStay"></button>
+  <button class="btn-next" id="btnNext"></button>
+</div>
+
+<script>
+const steps = [
+  {
+    emoji: "😢",
+    title: `Wait... you're <span class="highlight">leaving?</span>`,
+    body: `You installed this for a reason. Your goals, your dreams, your future — they all depend on your focus. <strong>Are you really sure about this?</strong>`,
+    stay: "I'm staying 💪",
+    next: "I want to uninstall"
+  },
+  {
+    emoji: "👀",
+    title: `Your future self is <span class="highlight">watching you.</span>`,
+    body: `Five years from now, you'll look back at this exact moment. Will you be proud? <strong>Every second of focus today compounds into tomorrow.</strong>`,
+    stay: "You're right, I'll stay 🙏",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "🏆",
+    title: `Champions don't <span class="highlight">quit.</span>`,
+    body: `Every person you admire has one thing in common — <strong>they stayed focused when it was hard.</strong> This is that moment. Don't let yourself down.`,
+    stay: "I am a champion! 🔥",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "😤",
+    title: `So distraction <span class="highlight">wins today?</span>`,
+    body: `YouTube, Instagram, TikTok — they have <strong>entire teams of engineers</strong> designed to steal your attention. You're about to let them win. Again.`,
+    stay: "Not today! 😤",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "💸",
+    title: `Time is <span class="highlight">money bro.</span>`,
+    body: `Every hour you waste scrolling is an hour someone else is building their dream, learning a skill, making money. <strong>What are you doing with yours?</strong>`,
+    stay: "You're right! Keeping it 💸",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "🧠",
+    title: `Your brain <span class="highlight">needs this.</span>`,
+    body: `Deep focus is a superpower. Most people never achieve it because they give up too easily. <strong>You were different. Don't stop now.</strong>`,
+    stay: "I am different! 🧠",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "😭",
+    title: `We worked so hard <span class="highlight">on this...</span>`,
+    body: `This extension was built with love for people who WANT to be better. People who take their goals seriously. <strong>Are you really going to delete all that?</strong>`,
+    stay: "Okay okay I'll keep it 😭",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "⏳",
+    title: `You only get <span class="highlight">24 hours.</span>`,
+    body: `Today. Tomorrow. Every single day. 24 hours that never come back. <strong>Focus Timer was protecting every single one of yours.</strong> Think carefully.`,
+    stay: "My time is precious ⏳",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "🔥",
+    title: `Last chance to <span class="highlight">be serious.</span>`,
+    body: `You set up this extension. You blocked the sites. You WERE serious about your goals. <strong>Don't let one weak moment define who you are.</strong>`,
+    stay: "I'm serious about my goals 🔥",
+    next: "I still want to uninstall"
+  },
+  {
+    emoji: "💀",
+    title: `Fine. <span class="highlight">You win.</span>`,
+    body: `Distraction: <strong>1</strong> &nbsp;—&nbsp; Discipline: <strong>0</strong>. We tried everything. Maybe one day you'll be ready to truly focus. We'll be here waiting. 👋`,
+    stay: "Actually... I'll keep it 😅",
+    next: "Okay I quit 😢"
+  }
+];
+
+let current = 0;
+
+const emojiEl = document.getElementById("emoji");
+const titleEl = document.getElementById("title");
+const bodyEl = document.getElementById("body");
+const btnStay = document.getElementById("btnStay");
+const btnNext = document.getElementById("btnNext");
+
+function render(index) {
+  const step = steps[index];
+  emojiEl.textContent = step.emoji;
+  emojiEl.className = "emoji" + (index < 9 ? " bounce" : "");
+  titleEl.innerHTML = step.title;
+  bodyEl.innerHTML = step.body;
+  btnStay.textContent = step.stay;
+  btnNext.textContent = step.next;
+
+  if (index === 9) {
+    btnNext.className = "btn-quit-final";
+    btnNext.onclick = () => window.close();
+  } else {
+    btnNext.className = "btn-next";
+    btnNext.onclick = () => { current++; render(current); };
+  }
+}
+
+btnStay.addEventListener("click", () => {
+  document.getElementById("card").innerHTML = `
+    <span class="emoji bounce">🎉</span>
+    <div class="accent-line" style="margin:18px auto 18px;"></div>
+    <h1>Welcome <span class="highlight">back!</span></h1>
+    <p>We knew you had it in you. <strong>Now close this tab and GET BACK TO WORK!</strong> Your goals are waiting. 💪🔥</p>
+  `;
+});
+
+render(0);
+</script>
+</body>
+</html>
