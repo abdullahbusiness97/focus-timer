@@ -53,6 +53,7 @@
     .accent-line { width: 44px; height: 4px; background: #dc2626; border-radius: 4px; margin: 0 auto 20px; }
     h1 { font-size: 30px; font-weight: 900; color: #18181b; letter-spacing: -1px; line-height: 1.2; margin-bottom: 14px; }
     .highlight { color: #dc2626; }
+    .highlight-green { color: #16a34a; }
     p { font-size: 15px; color: #52525b; line-height: 1.75; margin-bottom: 28px; font-weight: 400; }
     p strong { color: #18181b; font-weight: 700; }
     .btn-stay { width: 100%; padding: 14px; background: #18181b; color: white; border: none; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.15s; letter-spacing: -0.3px; margin-bottom: 10px; display: block; }
@@ -60,8 +61,10 @@
     .btn-stay:active { transform: scale(0.98); }
     .btn-next { width: 100%; padding: 12px; background: transparent; color: #a1a1aa; border: 1.5px solid #e4e4e7; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; display: block; }
     .btn-next:hover { border-color: #dc2626; color: #dc2626; }
-    .btn-quit-final { width: 100%; padding: 12px; background: transparent; color: #dc2626; border: 1.5px solid #fecaca; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; display: block; }
+    .btn-quit-final { width: 100%; padding: 12px; background: transparent; color: #dc2626; border: 1.5px solid #fecaca; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; display: block; margin-top: 10px; }
     .btn-quit-final:hover { background: #fef2f2; }
+    .btn-reinstall { width: 100%; padding: 14px; background: #16a34a; color: white; border: none; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.15s; display: block; margin-bottom: 10px; text-decoration: none; }
+    .btn-reinstall:hover { background: #15803d; transform: scale(1.01); }
   </style>
 </head>
 <body>
@@ -75,6 +78,8 @@
 </div>
 
 <script>
+const DOWNLOAD_URL = "https://github.com/abdullahbusiness97/focus-timer/raw/main/focus-timer-extension%20(1).zip";
+
 const steps = [
   {
     emoji: "😢",
@@ -143,7 +148,7 @@ const steps = [
     emoji: "💀",
     title: `Fine. <span class="highlight">You win.</span>`,
     body: `Distraction: <strong>1</strong> &nbsp;—&nbsp; Discipline: <strong>0</strong>. We tried everything. Maybe one day you'll be ready to truly focus. We'll be here waiting. 👋`,
-    stay: "Actually... I'll keep it 😅",
+    stay: "Actually... I want to reinstall it! 😅",
     next: "Okay I quit 😢"
   }
 ];
@@ -165,23 +170,46 @@ function render(index) {
   btnStay.textContent = step.stay;
   btnNext.textContent = step.next;
 
+  // Last screen
   if (index === 9) {
+    // Stay button shows reinstall screen
+    btnStay.onclick = () => {
+      document.getElementById("card").innerHTML = `
+        <span class="emoji bounce">🎉</span>
+        <div class="accent-line" style="margin:18px auto 18px;"></div>
+        <h1>Let's get you <span class="highlight-green">back!</span></h1>
+        <p>We're so proud of you for coming back. <strong>Click the button below to download Focus Timer and reinstall it!</strong> Your goals are still waiting. 💪</p>
+        <a href="${DOWNLOAD_URL}" download class="btn-reinstall">⬇️ Download Focus Timer</a>
+        <p style="font-size:12px; color:#a1a1aa; margin-top:12px;">After downloading: Extract the zip → Go to chrome://extensions → Load unpacked → Select the folder</p>
+      `;
+    };
+
+    // Next button = quit for real
     btnNext.className = "btn-quit-final";
-    btnNext.onclick = () => { document.getElementById('card').innerHTML = '<span class="emoji">😔</span><div class="accent-line" style="margin:18px auto;"></div><h1>Goodbye... <span class="highlight">for now.</span></h1><p>Go to <strong>chrome://extensions</strong> in your browser, find Focus Timer and click <strong>Remove</strong>.<br/><br/>We hope you come back someday. 👋</p>'; };
+    btnNext.onclick = () => {
+      document.getElementById("card").innerHTML = `
+        <span class="emoji">😔</span>
+        <div class="accent-line" style="margin:18px auto 18px;"></div>
+        <h1>Goodbye... <span class="highlight">for now.</span></h1>
+        <p>We hope you come back someday when you're ready. <strong>The door is always open. 👋</strong><br/><br/>Miss us? Come back at <strong>abdullahbusiness97.github.io/focus-timer</strong></p>
+      `;
+    };
+
   } else {
+    // All other screens — stay goes to celebration
+    btnStay.onclick = () => {
+      document.getElementById("card").innerHTML = `
+        <span class="emoji bounce">🎉</span>
+        <div class="accent-line" style="margin:18px auto 18px;"></div>
+        <h1>Welcome <span class="highlight">back!</span></h1>
+        <p>We knew you had it in you. <strong>Now close this tab and GET BACK TO WORK!</strong> Your goals are waiting. 💪🔥</p>
+      `;
+    };
+
     btnNext.className = "btn-next";
     btnNext.onclick = () => { current++; render(current); };
   }
 }
-
-btnStay.addEventListener("click", () => {
-  document.getElementById("card").innerHTML = `
-    <span class="emoji bounce">🎉</span>
-    <div class="accent-line" style="margin:18px auto 18px;"></div>
-    <h1>Welcome <span class="highlight">back!</span></h1>
-    <p>We knew you had it in you. <strong>Now close this tab and GET BACK TO WORK!</strong> Your goals are waiting. 💪🔥</p>
-  `;
-});
 
 render(0);
 </script>
